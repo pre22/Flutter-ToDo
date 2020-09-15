@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertodo/util/dbhelper.dart';
+import 'package:fluttertodo/model/todo.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,6 +10,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    List<Todo> todos = List<Todo>();
+    DbHelper helper = DbHelper();
+    helper
+        .initializeDb()
+        .then((result) => helper.getTodos().then((result) => todos = result));
+    DateTime today = DateTime.now();
+
+    Todo todo =
+        Todo('Buy Apples', 1, today.toString(), "And make sure they are good");
+    helper.insertTodo(todo);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
